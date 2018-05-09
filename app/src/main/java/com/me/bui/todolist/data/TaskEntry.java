@@ -1,12 +1,18 @@
 package com.me.bui.todolist.data;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+
 import java.util.Date;
 
 /**
  * Created by mao.bui on 5/9/2018.
  */
+
+@Entity(tableName = "task")
 public class TaskEntry {
 
+    @PrimaryKey(autoGenerate = true)
     private int id;
     private String description;
     private int priority;
