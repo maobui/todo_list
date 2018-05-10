@@ -12,6 +12,9 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.me.bui.todolist.data.AppData;
+import com.me.bui.todolist.data.TaskEntry;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements TaskAdapter.ItemClickListener {
 
@@ -82,7 +85,20 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.ItemC
     @Override
     protected void onResume() {
         super.onResume();
-        mAdapter.setTasks(mDb.taskDao().loadAllTask());
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                // Data logic.
+                final List<TaskEntry> tasks = mDb.taskDao().loadAllTask();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        // Update UI.
+                        mAdapter.setTasks(tasks);
+                    }
+                });
+            }
+        });
     }
 
     @Override

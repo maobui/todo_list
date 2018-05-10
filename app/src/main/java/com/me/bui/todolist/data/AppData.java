@@ -26,6 +26,9 @@ public abstract class AppData extends RoomDatabase {
             synchronized (LOCK) {
                 Log.d(TAG, "Create new database instance.");
                 sInstance = Room.databaseBuilder(context.getApplicationContext(), AppData.class, AppData.DATABASE_NAME)
+                        // TODO (1) Disable queries on main thread
+                        // Queries should be done in a separate thread to avoid locking the UI
+                        // We will allow this ONLY TEMPORALLY to see that our DB is working
                         .allowMainThreadQueries()
                         .build();
             }
