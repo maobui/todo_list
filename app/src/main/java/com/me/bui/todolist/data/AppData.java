@@ -3,6 +3,8 @@ package com.me.bui.todolist.data;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
+import android.arch.persistence.room.TypeConverter;
+import android.arch.persistence.room.TypeConverters;
 import android.content.Context;
 import android.util.Log;
 
@@ -11,6 +13,7 @@ import android.util.Log;
  */
 
 @Database(entities = {TaskEntry.class}, version = 1, exportSchema = false)
+@TypeConverters(DateConverter.class)
 public abstract class AppData extends RoomDatabase {
 
     private static final String TAG = AppData.class.getSimpleName();

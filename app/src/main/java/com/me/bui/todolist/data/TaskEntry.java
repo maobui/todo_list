@@ -1,6 +1,7 @@
 package com.me.bui.todolist.data;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 import java.util.Date;
@@ -25,6 +26,7 @@ public class TaskEntry {
         this.updatedAt = updatedAt;
     }
 
+    @Ignore
     public TaskEntry(String description, int priority, Date updatedAt) {
 
         this.description = description;
