@@ -11,6 +11,8 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.me.bui.todolist.data.AppData;
+
 public class MainActivity extends AppCompatActivity implements TaskAdapter.ItemClickListener {
 
     // Constant for logging
@@ -18,6 +20,8 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.ItemC
     // Member variables for the adapter and RecyclerView
     private RecyclerView mRecyclerView;
     private TaskAdapter mAdapter;
+
+    private AppData mDb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +75,14 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.ItemC
                 startActivity(addTaskIntent);
             }
         });
+
+        mDb = AppData.getInstance(getApplicationContext());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mAdapter.setTasks(mDb.taskDao().loadAllTask());
     }
 
     @Override

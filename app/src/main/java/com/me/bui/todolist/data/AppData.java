@@ -25,7 +25,9 @@ public abstract class AppData extends RoomDatabase {
         if (sInstance == null){
             synchronized (LOCK) {
                 Log.d(TAG, "Create new database instance.");
-                sInstance = Room.databaseBuilder(context.getApplicationContext(), AppData.class, AppData.DATABASE_NAME).build();
+                sInstance = Room.databaseBuilder(context.getApplicationContext(), AppData.class, AppData.DATABASE_NAME)
+                        .allowMainThreadQueries()
+                        .build();
             }
         }
         Log.d(TAG, "Getting the database instance.");
