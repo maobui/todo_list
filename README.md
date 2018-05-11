@@ -11,3 +11,9 @@ https://classroom.udacity.com/courses/ud851/lessons/1a4a85e6-c457-4192-aaab-9fa4
 ### Threads and Runnables
 
 ![](/images/threads_runnables.png)
+
+### LiveData vs Observer Pattern
+
+	The LiveData is a class Observer DataHolder.
+
+![](/images/live_data.png) ![](/images/observer.png)
