@@ -60,10 +60,11 @@ public class AddTaskActivity extends AppCompatActivity {
             if (mTaskId == DEFAULT_TASK_ID) {
                 // populate the UI
                 mTaskId = intent.getIntExtra(EXTRA_TASK_ID, DEFAULT_TASK_ID);
-                LiveData<TaskEntry> task = mDb.taskDao().loadTaskById(mTaskId);
+                final LiveData<TaskEntry> task = mDb.taskDao().loadTaskById(mTaskId);
                 task.observe(this, new Observer<TaskEntry>() {
                     @Override
                     public void onChanged(@Nullable TaskEntry taskEntry) {
+                        task.removeObserver(this);
                         Log.d(TAG, "Receiving database update from Livedata.");
                         populateUI(taskEntry);
                     }
