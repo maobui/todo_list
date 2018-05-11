@@ -1,7 +1,7 @@
 package com.me.bui.todolist;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -13,7 +13,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.View;
-import android.widget.LinearLayout;
 
 import com.me.bui.todolist.data.AppData;
 import com.me.bui.todolist.data.TaskEntry;
@@ -93,16 +92,15 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.ItemC
         mDb = AppData.getInstance(getApplicationContext());
 
         // Only call once, Livedata will auto update when database changed.
-        retrieveTasks();
+        setupViewModel();
     }
 
-    private void retrieveTasks() {
-        Log.d(TAG, "Actively retrieving the task from Database.");
-        final LiveData<List<TaskEntry>> tasks = mDb.taskDao().loadAllTask();
-        tasks.observe(this, new Observer<List<TaskEntry>>() {
+    private void setupViewModel() {
+        MainViewModel viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        viewModel.getTasks().observe(this, new Observer<List<TaskEntry>>() {
             @Override
             public void onChanged(@Nullable List<TaskEntry> taskEntries) {
-                Log.d(TAG, "Receiving database update from Livedata.");
+                Log.d(TAG, "Updating list of task from LiveData in ViewModel.");
                 mAdapter.setTasks(taskEntries);
             }
         });
