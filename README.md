@@ -17,3 +17,9 @@ https://classroom.udacity.com/courses/ud851/lessons/1a4a85e6-c457-4192-aaab-9fa4
 	The LiveData is a class Observer DataHolder.
 
 ![](/images/live_data.png) ![](/images/observer.png)
+
+### ViewModel
+	
+	ViewModel allows data to servive configuration changes such as rotation as ==> solved memory leak.
+
+![](/images/view_model.png)
