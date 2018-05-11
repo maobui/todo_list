@@ -1,4 +1,4 @@
-package com.me.bui.todolist;
+package com.me.bui.todolist.viewmodel;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
