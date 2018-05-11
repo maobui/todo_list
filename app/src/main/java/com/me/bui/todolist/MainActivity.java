@@ -1,6 +1,9 @@
 package com.me.bui.todolist;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,6 +11,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -65,7 +69,6 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.ItemC
                         int position = viewHolder.getAdapterPosition();
                         List<TaskEntry> tasks = mAdapter.getTask();
                         mDb.taskDao().deleteTask(tasks.get(position));
-                        retrieveTasks();
                     }
                 });
             }
@@ -88,27 +91,19 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.ItemC
         });
 
         mDb = AppData.getInstance(getApplicationContext());
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
+        // Only call once, Livedata will auto update when database changed.
         retrieveTasks();
     }
 
     private void retrieveTasks() {
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+        Log.d(TAG, "Actively retrieving the task from Database.");
+        final LiveData<List<TaskEntry>> tasks = mDb.taskDao().loadAllTask();
+        tasks.observe(this, new Observer<List<TaskEntry>>() {
             @Override
-            public void run() {
-                // Data logic.
-                final List<TaskEntry> tasks = mDb.taskDao().loadAllTask();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        // Update UI.
-                        mAdapter.setTasks(tasks);
-                    }
-                });
+            public void onChanged(@Nullable List<TaskEntry> taskEntries) {
+                Log.d(TAG, "Receiving database update from Livedata.");
+                mAdapter.setTasks(taskEntries);
             }
         });
     }
